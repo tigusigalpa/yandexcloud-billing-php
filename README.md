@@ -1,5 +1,7 @@
 # Yandex Cloud Billing PHP SDK
 
+![Yandex Cloud Billing PHP SDK](https://i.ibb.co/RkMtJq1t/c-J5-WHu-Ugcy-LQJBuz-WM97y-T.png)
+
 PHP SDK для работы с Yandex Cloud Billing API.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tigusigalpa/yandexcloud-billing-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexcloud-billing-php)
@@ -8,7 +10,8 @@ PHP SDK для работы с Yandex Cloud Billing API.
 
 ## Описание
 
-Этот пакет предоставляет удобный интерфейс для работы с Yandex Cloud Billing API, позволяя получать информацию о биллинговых аккаунтах и бюджетах.
+Этот пакет предоставляет удобный интерфейс для работы с Yandex Cloud Billing API, позволяя получать информацию о
+биллинговых аккаунтах и бюджетах.
 
 ## Возможности
 
@@ -48,7 +51,8 @@ composer require tigusigalpa/yandexcloud-billing-php
    yc iam create-token
    ```
 
-2. **Через веб-интерфейс**: Перейдите на [страницу OAuth токенов](https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb)
+2. **Через веб-интерфейс**: Перейдите
+   на [страницу OAuth токенов](https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb)
 
 3. **Через переменную окружения**:
    ```bash
@@ -231,7 +235,8 @@ try {
 - `list()` - Получить список биллинговых аккаунтов
 - `get(string $billingAccountId)` - Получить информацию о биллинговом аккаунте
 - `listBoundClouds(string $billingAccountId)` - Получить список привязанных облаков
-- `bindBillableObject(string $billingAccountId, string $billableObjectId, string $billableObjectType = 'cloud')` - Привязать объект к биллинговому аккаунту
+- `bindBillableObject(string $billingAccountId, string $billableObjectId, string $billableObjectType = 'cloud')` -
+  Привязать объект к биллинговому аккаунту
 - `listAccessBindings(string $billingAccountId)` - Получить список привязок доступа
 
 ### BudgetResource
@@ -246,7 +251,8 @@ try {
 
 ## Документация
 
-Подробная документация доступна в [официальной документации Yandex Cloud](https://yandex.cloud/ru/docs/billing/api-ref/).
+Подробная документация доступна
+в [официальной документации Yandex Cloud](https://yandex.cloud/ru/docs/billing/api-ref/).
 
 ## Тестирование
 
@@ -283,4 +289,5 @@ MIT License. Подробности в файле [LICENSE](LICENSE).
 
 ## Поддержка
 
-Если у вас есть вопросы или предложения, создайте issue в [GitHub репозитории](https://github.com/tigusigalpa/yandexcloud-billing-php/issues).
+Если у вас есть вопросы или предложения, создайте issue
+в [GitHub репозитории](https://github.com/tigusigalpa/yandexcloud-billing-php/issues).
