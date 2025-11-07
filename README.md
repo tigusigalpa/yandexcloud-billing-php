@@ -1,11 +1,10 @@
 # Yandex Cloud Billing PHP SDK
 
-![Yandex Cloud Billing PHP SDK](https://i.ibb.co/RkMtJq1t/c-J5-WHu-Ugcy-LQJBuz-WM97y-T.png)
+![Yandex Cloud Billing PHP SDK](https://github.com/user-attachments/assets/3f8a22f8-2f47-4a0a-8198-b072cef361b3)
 
 PHP SDK для работы с Yandex Cloud Billing API.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tigusigalpa/yandexcloud-billing-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexcloud-billing-php)
-[![Total Downloads](https://img.shields.io/packagist/dt/tigusigalpa/yandexcloud-billing-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexcloud-billing-php)
 [![License](https://img.shields.io/packagist/l/tigusigalpa/yandexcloud-billing-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexcloud-billing-php)
 
 ## Описание
