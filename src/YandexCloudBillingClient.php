@@ -6,8 +6,7 @@ namespace Tigusigalpa\YandexCloudBilling;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use Tigusigalpa\YandexCloudBilling\Auth\IamTokenManager;
-use Tigusigalpa\YandexCloudBilling\Auth\ServiceAccountAuth;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 use Tigusigalpa\YandexCloudBilling\Exceptions\AuthenticationException;
 use Tigusigalpa\YandexCloudBilling\Resources\BillingAccountResource;
 use Tigusigalpa\YandexCloudBilling\Resources\BudgetResource;
@@ -17,11 +16,9 @@ use Tigusigalpa\YandexCloudBilling\Resources\CostResource;
 class YandexCloudBillingClient
 {
     private const BASE_URI = 'https://billing.api.cloud.yandex.net/billing/v1/';
-    public const IAM_TOKEN_ENDPOINT = 'https://iam.api.cloud.yandex.net/iam/v1/tokens';
-    public const RESOURCE_MANAGER_ENDPOINT = 'https://resource-manager.api.cloud.yandex.net/resource-manager/v1/';
 
     private ClientInterface $httpClient;
-    private IamTokenManager|ServiceAccountAuth $authManager;
+    private YandexCloudClient $cloudClient;
 
     public function __construct(string $oauthToken, ?ClientInterface $httpClient = null)
     {
@@ -29,7 +26,7 @@ class YandexCloudBillingClient
             throw new AuthenticationException('OAuth token cannot be empty');
         }
 
-        $this->authManager = new IamTokenManager($oauthToken);
+        $this->cloudClient = new YandexCloudClient($oauthToken, $httpClient);
         
         $this->httpClient = $httpClient ?? new Client([
             'base_uri' => self::BASE_URI,
@@ -51,7 +48,12 @@ class YandexCloudBillingClient
         ?ClientInterface $httpClient = null
     ): self {
         $instance = new self('dummy-token'); // Временный токен для конструктора
-        $instance->authManager = new ServiceAccountAuth($serviceAccountId, $keyId, $privateKey);
+        $instance->cloudClient = YandexCloudClient::createWithServiceAccount(
+            $serviceAccountId,
+            $keyId,
+            $privateKey,
+            $httpClient
+        );
         
         $instance->httpClient = $httpClient ?? new Client([
             'base_uri' => self::BASE_URI,
@@ -67,22 +69,22 @@ class YandexCloudBillingClient
 
     public function billingAccount(): BillingAccountResource
     {
-        return new BillingAccountResource($this->httpClient, $this->authManager);
+        return new BillingAccountResource($this->httpClient, $this->cloudClient->getAuthManager());
     }
 
     public function budget(): BudgetResource
     {
-        return new BudgetResource($this->httpClient, $this->authManager);
+        return new BudgetResource($this->httpClient, $this->cloudClient->getAuthManager());
     }
 
     public function usage(): UsageResource
     {
-        return new UsageResource($this->httpClient, $this->authManager);
+        return new UsageResource($this->httpClient, $this->cloudClient->getAuthManager());
     }
 
     public function cost(): CostResource
     {
-        return new CostResource($this->httpClient, $this->authManager);
+        return new CostResource($this->httpClient, $this->cloudClient->getAuthManager());
     }
 
     public function getHttpClient(): ClientInterface
@@ -90,17 +92,13 @@ class YandexCloudBillingClient
         return $this->httpClient;
     }
 
-    public function getAuthManager(): IamTokenManager|ServiceAccountAuth
+    /**
+     * Get Yandex Cloud Client for cloud resource management
+     *
+     * @return YandexCloudClient
+     */
+    public function getCloudClient(): YandexCloudClient
     {
-        return $this->authManager;
-    }
-
-    public function getOauthToken(): string
-    {
-        if ($this->authManager instanceof IamTokenManager) {
-            return $this->authManager->getOAuthToken();
-        }
-        
-        throw new AuthenticationException('OAuth token is not available for Service Account authentication');
+        return $this->cloudClient;
     }
 }

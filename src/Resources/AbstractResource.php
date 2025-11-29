@@ -7,8 +7,8 @@ namespace Tigusigalpa\YandexCloudBilling\Resources;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Tigusigalpa\YandexCloudBilling\Auth\IamTokenManager;
-use Tigusigalpa\YandexCloudBilling\Auth\ServiceAccountAuth;
+use Tigusigalpa\YandexCloudClient\Auth\IamTokenManager;
+use Tigusigalpa\YandexCloudClient\Auth\ServiceAccountAuth;
 use Tigusigalpa\YandexCloudBilling\Exceptions\AuthenticationException;
 use Tigusigalpa\YandexCloudBilling\Exceptions\YandexCloudBillingException;
 

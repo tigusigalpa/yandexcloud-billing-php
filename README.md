@@ -8,6 +8,8 @@
 
 PHP/Laravel клиентская библиотека для **Yandex Cloud Billing API** — сервиса управления биллинговыми аккаунтами, бюджетами и анализа расходов в Yandex Cloud.
 
+> **Примечание:** Этот пакет использует [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) для управления инфраструктурой Yandex Cloud (авторизация, организации, облака, каталоги).
+
 ## 📚 Документация
 
 - [Документация Yandex Cloud Billing](https://yandex.cloud/ru/docs/billing/)
@@ -599,6 +601,76 @@ $client = YandexCloudBillingClient::createWithServiceAccount(
 - **`YandexCloudBillingException`** - Базовое исключение для всех ошибок API
 - **`AuthenticationException`** - Ошибка аутентификации (неверный токен, истек срок)
 - **`ValidationException`** - Ошибка валидации данных
+
+## ☁️ Управление облачными ресурсами
+
+Пакет интегрирован с [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php), что позволяет управлять облачной инфраструктурой Yandex Cloud напрямую через billing клиент.
+
+### Доступ к YandexCloudClient
+
+```php
+use Tigusigalpa\YandexCloudBilling\YandexCloudBillingClient;
+
+$billingClient = new YandexCloudBillingClient('y0_your-oauth-token');
+
+// Получить доступ к облачному клиенту
+$cloudClient = $billingClient->getCloudClient();
+
+// Работа с организациями
+$organizations = $cloudClient->organizations()->list();
+
+// Работа с облаками
+$clouds = $cloudClient->clouds()->list();
+
+// Работа с каталогами
+$folders = $cloudClient->folders()->list('cloud-id');
+
+// Создание нового каталога
+$folder = $cloudClient->folders()->create([
+    'cloudId' => 'cloud-id',
+    'name' => 'Production',
+    'description' => 'Production environment folder'
+]);
+```
+
+### Laravel Facade
+
+```php
+use Tigusigalpa\YandexCloudBilling\Laravel\Facades\YandexCloudBilling;
+
+// Получить облачный клиент
+$cloudClient = YandexCloudBilling::getCloudClient();
+
+// Список облаков
+$clouds = $cloudClient->clouds()->list();
+
+// Список каталогов
+$folders = $cloudClient->folders()->list('cloud-id');
+```
+
+### Интеграция с биллингом
+
+```php
+use Tigusigalpa\YandexCloudBilling\YandexCloudBillingClient;
+
+$client = new YandexCloudBillingClient('y0_your-oauth-token');
+
+// Получить список облаков
+$cloudClient = $client->getCloudClient();
+$clouds = $cloudClient->clouds()->list();
+
+// Привязать облако к биллинговому аккаунту
+foreach ($clouds['clouds'] as $cloud) {
+    $result = $client->billingAccount()->bindBillableObject(
+        'billing-account-id',
+        $cloud['id'],
+        'cloud'
+    );
+    echo "Cloud {$cloud['name']} привязан к биллинговому аккаунту\n";
+}
+```
+
+Подробнее о возможностях управления облачными ресурсами см. в документации [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
 
 ## 🔗 Дополнительная документация
 
